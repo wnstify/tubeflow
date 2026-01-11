@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/yourorg/tubeflow/blob/main/README.md
+    about: Read the documentation before opening an issue
+  - name: Usage Guide
+    url: https://github.com/yourorg/tubeflow/blob/main/USAGE.md
+    about: Check the usage guide for workflow help
+  - name: Discussions
+    url: https://github.com/yourorg/tubeflow/discussions
+    about: Ask questions and discuss ideas in GitHub Discussions

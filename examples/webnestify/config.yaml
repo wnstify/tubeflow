@@ -1,0 +1,115 @@
+# TubeFlow Configuration - Webnestify Example
+# This is a production configuration from the @webnestify YouTube channel
+# Use this as a reference for your own setup
+
+version: "1.0"
+
+# =============================================================================
+# CHANNEL IDENTITY
+# =============================================================================
+channel:
+  name: "Webnestify"
+  handle: "@webnestify"
+  tagline: "Self-hosting tutorials, Docker guides, and cloud solutions"
+  niche: "self-hosting"
+
+# =============================================================================
+# VOICE & STYLE
+# =============================================================================
+voice:
+  style_file: "simon-writing-style.md"
+  channel_overview_file: "03-YouTube/channel-overview.md"
+  tone: "friendly"
+
+# =============================================================================
+# FOLDER STRUCTURE (Obsidian-style)
+# =============================================================================
+structure:
+  type: "obsidian"
+  youtube_root: "03-YouTube"
+  social_root: "04-Social"
+  templates_root: "05-Templates"
+  ideas_folder: "ideas"
+  drafts_folder: "drafts"
+  published_folder: "published"
+  research_folder: "research"
+
+# =============================================================================
+# LINKS
+# =============================================================================
+links:
+  # Community & Contact
+  discord: "https://wnstify.cc/discord"
+  business: "https://webnestify.cloud/contact"
+
+  # GitHub
+  github_org: "https://github.com/wnstify"
+  voting_repo: "https://github.com/wnstify/wn-youtube"
+  docker_repo: "https://github.com/wnstify/docker"
+
+  # Social Media
+  linkedin: "https://linkedin.com/company/webnestify"
+  facebook: "https://facebook.com/webnestify.cloud"
+  twitter: "https://twitter.com/webnestify"
+
+  # Reviews
+  reviews: "https://www.trustpilot.com/review/webnestify.cloud"
+
+  # Featured Video (Definitive Self-Hosting Guide)
+  featured_video: "https://youtube.com/watch?v=tTyq9xGy1pM"
+  featured_video_title: "Definitive Self-Hosting Guide"
+
+# =============================================================================
+# FEATURES
+# =============================================================================
+features:
+  public_repo_sync: true
+  social_media: true
+  research_agents: true
+  sponsorship_research: true
+  obsidian_links: true
+  include_about_section: true
+
+# =============================================================================
+# ABOUT SECTION
+# =============================================================================
+about:
+  company_name: "Webnestify"
+  established: "2021"
+  location: "Slovakia"
+  tagline: "We're here to ensure your company doesn't just keep up with the digital age but thrives in it."
+  application_url: "https://webnestify.cloud/webnestify-application/"
+
+# =============================================================================
+# ADVANCED
+# =============================================================================
+advanced:
+  research_model: "haiku"
+  strategy_model: "opus"
+  content_model: "sonnet"
+  parallel_research: true
+  auto_publish_prompt: true
+
+# =============================================================================
+# CUSTOM CATEGORIES (for video organization)
+# =============================================================================
+categories:
+  # Keywords that trigger category assignment
+  keywords:
+    Docker: ["docker", "container", "compose", "dockerfile"]
+    Self-Hosting: ["self-host", "homelab", "home server", "vps"]
+    Security: ["security", "auth", "firewall", "vpn", "crowdsec"]
+    Automation: ["automate", "ci/cd", "pipeline", "ansible"]
+    Monitoring: ["monitor", "alert", "grafana", "prometheus"]
+    Networking: ["network", "dns", "reverse proxy", "cloudflare"]
+    Backup: ["backup", "restore", "disaster recovery"]
+
+  # Section headers for VIDEOS.md
+  sections:
+    Docker: "Docker & Containers"
+    Self-Hosting: "Self-Hosting & Home Lab"
+    Security: "Security & Authentication"
+    Automation: "Automation & DevOps"
+    Monitoring: "Monitoring & Observability"
+    Networking: "Networking & DNS"
+    Backup: "Backup & Recovery"

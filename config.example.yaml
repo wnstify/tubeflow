@@ -1,0 +1,145 @@
+# TubeFlow Configuration
+# Copy this file to config.yaml and customize for your channel
+# Run ./install.sh for interactive setup
+
+version: "1.0"
+
+# =============================================================================
+# CHANNEL IDENTITY
+# =============================================================================
+channel:
+  # Your channel name (e.g., "Webnestify", "TechWithTim")
+  name: "Your Channel Name"
+
+  # Your YouTube handle (e.g., "@webnestify", "@techwithtime")
+  handle: "@yourchannel"
+
+  # Short tagline for your channel
+  tagline: "Your channel tagline here"
+
+  # Primary niche (used for content suggestions)
+  # Options: self-hosting, programming, gaming, education, tech-reviews, devops, etc.
+  niche: "self-hosting"
+
+# =============================================================================
+# VOICE & STYLE
+# =============================================================================
+voice:
+  # Path to your writing style guide (relative to vault root)
+  # This file defines how content should sound
+  style_file: "writing-style.md"
+
+  # Path to channel overview/brand guide
+  channel_overview_file: "channel-overview.md"
+
+  # Default tone: friendly, professional, casual, educational
+  tone: "friendly"
+
+# =============================================================================
+# FOLDER STRUCTURE
+# =============================================================================
+structure:
+  # Vault type: obsidian or markdown
+  type: "obsidian"
+
+  # Root folders (customize to match your vault structure)
+  youtube_root: "03-YouTube"
+  social_root: "04-Social"
+  templates_root: "05-Templates"
+
+  # Subfolders (usually don't need to change)
+  ideas_folder: "ideas"
+  drafts_folder: "drafts"
+  published_folder: "published"
+  research_folder: "research"
+
+# =============================================================================
+# LINKS (Required)
+# =============================================================================
+links:
+  # Community & Contact (Required)
+  discord: "https://discord.gg/your-server"
+  business: "https://yoursite.com/contact"
+
+  # GitHub (Required for full functionality)
+  github_org: "https://github.com/yourorg"
+
+  # Public video repository for community voting (Optional but recommended)
+  # Users can vote on upcoming videos via GitHub issues
+  voting_repo: "https://github.com/yourorg/youtube-videos"
+
+  # Docker Compose repository (Optional - for Docker-related content)
+  docker_repo: "https://github.com/yourorg/docker"
+
+  # Social Media (All optional - include what you use)
+  linkedin: "https://linkedin.com/company/yourcompany"
+  facebook: "https://facebook.com/yourpage"
+  twitter: "https://twitter.com/yourhandle"
+
+  # Reviews (Optional)
+  reviews: ""  # e.g., Trustpilot, G2, etc.
+
+  # Featured Video (Optional - your most important video to reference)
+  # Example: Your "getting started" or flagship tutorial
+  featured_video: ""
+  featured_video_title: ""
+
+# =============================================================================
+# FEATURES (Enable/Disable)
+# =============================================================================
+features:
+  # Sync published videos to a public GitHub repository
+  # Creates README files, updates video catalog, closes roadmap issues
+  public_repo_sync: true
+
+  # Enable social media content creation workflow
+  # Creates LinkedIn, Twitter, Facebook posts from video content
+  social_media: true
+
+  # Use 5 specialized research agents before content creation
+  # Gathers topic info, competitor analysis, SEO data, community insights
+  research_agents: true
+
+  # Automatically research FUNDING.yml and GitHub Sponsors for projects
+  # Ensures proper attribution and support links for open-source tools
+  sponsorship_research: true
+
+  # Use Obsidian wiki-links [[like-this]] vs regular markdown [links](path)
+  obsidian_links: true
+
+  # Include "About" section in YouTube descriptions
+  include_about_section: true
+
+# =============================================================================
+# ABOUT SECTION (For YouTube descriptions)
+# =============================================================================
+about:
+  # Your company/channel name
+  company_name: "Your Company"
+
+  # When established
+  established: "2024"
+
+  # Location (optional)
+  location: "Your Location"
+
+  # Company tagline/mission
+  tagline: "Your mission statement here"
+
+  # Application/signup URL (optional)
+  application_url: ""
+
+# =============================================================================
+# ADVANCED (Usually don't need to change)
+# =============================================================================
+advanced:
+  # Model preferences for agents
+  research_model: "haiku"      # Fast, cheap for research gathering
+  strategy_model: "opus"       # Powerful for synthesis
+  content_model: "sonnet"      # Balanced for content creation
+
+  # Parallel research agents (Phase 1 of research workflow)
+  parallel_research: true
+
+  # Auto-ask about publishing after /youtube full
+  auto_publish_prompt: true

@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Complete social links table (Website, YouTube, Discord, GitHub, LinkedIn, Twitter, Facebook, Trustpilot)
 - GitHub repositories showcase
 - Business contact and application links
+- GitHub Actions release workflow with SHA256 checksums and build attestation
 
 ### Changed
 - Updated Python requirement from 3.8+ to 3.10+ (yt-dlp compatibility)

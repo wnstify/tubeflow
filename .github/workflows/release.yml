@@ -1,0 +1,121 @@
+# TubeFlow Release Workflow
+# Creates releases with SHA256 checksums and build attestation
+#
+# Trigger: Push a tag like v1.0.0, v1.1.0, etc.
+# Example: git tag -a v1.1.0 -m "Release v1.1.0" && git push origin v1.1.0
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Create release artifacts
+        run: |
+          mkdir -p dist
+
+          # Create tarball
+          git archive --format=tar.gz --prefix=tubeflow-${{ steps.version.outputs.VERSION }}/ \
+            -o dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz HEAD
+
+          # Create zip
+          git archive --format=zip --prefix=tubeflow-${{ steps.version.outputs.VERSION }}/ \
+            -o dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip HEAD
+
+      - name: Generate SHA256 checksums
+        run: |
+          cd dist
+          sha256sum tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz \
+                    tubeflow-${{ steps.version.outputs.VERSION }}.zip > SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Attest build provenance (tarball)
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+
+      - name: Attest build provenance (zip)
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip
+
+      - name: Attest build provenance (checksums)
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/SHA256SUMS.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+            dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip
+            dist/SHA256SUMS.txt
+          generate_release_notes: true
+          body: |
+            ## TubeFlow v${{ steps.version.outputs.VERSION }}
+
+            **Research-First YouTube Content Creation Pipeline for Claude Code**
+
+            ---
+
+            ### Verify Release Integrity
+
+            **SHA256 Checksums:**
+            ```bash
+            # Download and verify
+            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/SHA256SUMS.txt
+            sha256sum -c SHA256SUMS.txt
+            ```
+
+            **GitHub Attestation:**
+            ```bash
+            # Verify with GitHub CLI
+            gh attestation verify tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz \
+              --owner wnstify
+            ```
+
+            ---
+
+            ### Installation
+
+            **macOS / Linux / WSL2:**
+            ```bash
+            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+            tar -xzf tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+            cd tubeflow-${{ steps.version.outputs.VERSION }}
+            ./install.sh
+            ```
+
+            **Or clone from source:**
+            ```bash
+            git clone https://github.com/wnstify/tubeflow.git
+            cd tubeflow
+            git checkout ${{ github.ref_name }}
+            ./install.sh
+            ```
+
+            ---
+
+            See [CHANGELOG.md](https://github.com/wnstify/tubeflow/blob/main/CHANGELOG.md) for full release notes.

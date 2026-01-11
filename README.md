@@ -102,7 +102,7 @@ cd tubeflow
 
 ## Installed Components
 
-TubeFlow includes **46 files** across 10 categories:
+TubeFlow includes **47 files** across 11 categories:
 
 ### Agents (9 files)
 
@@ -188,6 +188,14 @@ Issue and PR templates in `.github/`:
 | `ISSUE_TEMPLATE/feature_request.md` | Feature request with use cases and priority |
 | `ISSUE_TEMPLATE/config.yml` | Template chooser configuration |
 | `PULL_REQUEST_TEMPLATE.md` | PR template with checklist and testing |
+
+### GitHub Actions (1 file)
+
+Automated workflows in `.github/workflows/`:
+
+| Workflow | Purpose |
+|----------|---------|
+| `release.yml` | Automated releases with SHA256 checksums and build attestation |
 
 ### Root Files (8 files)
 
@@ -699,7 +707,7 @@ Interactive wizard handles prerequisites, configuration, and template processing
 | **Scripts** | 5 Python utilities |
 | **Platforms** | 4 (YouTube + LinkedIn + Twitter + Facebook) |
 | **Research agents (parallel)** | 4 + 1 strategist |
-| **Total files** | 46 |
+| **Total files** | 47 |
 | **License** | MIT (fully open-source) |
 
 ---

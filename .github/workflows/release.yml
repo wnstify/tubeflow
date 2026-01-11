@@ -1,15 +1,23 @@
 # TubeFlow Release Workflow
-# Creates releases with SHA256 checksums, attestation.json, and GitHub attestation
+# Creates verified releases with SHA256 checksums, attestation.json, and GitHub attestation
 #
-# Trigger: Push a tag like v1.0.0, v1.1.0, etc.
-# Example: git tag -a v1.1.0 -m "Release v1.1.0" && git push origin v1.1.0
+# Usage: Go to Actions > Release > Run workflow > Enter version (e.g., 1.0.0)
+# The workflow creates a verified tag and release with all attestation files
 
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 1.0.0)'
+        required: true
+        type: string
+      prerelease:
+        description: 'Pre-release?'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -27,29 +35,45 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Get version from tag
-        id: version
-        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+      - name: Validate version format
+        run: |
+          if ! [[ "${{ inputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?$ ]]; then
+            echo "Error: Invalid version format. Use semantic versioning (e.g., 1.0.0 or 1.0.0-beta.1)"
+            exit 1
+          fi
+
+      - name: Check if tag exists
+        run: |
+          if git rev-parse "v${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "Error: Tag v${{ inputs.version }} already exists"
+            exit 1
+          fi
 
       - name: Create release artifacts
         run: |
           mkdir -p dist
+          VERSION="${{ inputs.version }}"
 
-          # Create tarball
-          git archive --format=tar.gz --prefix=tubeflow-${{ steps.version.outputs.VERSION }}/ \
-            -o dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz HEAD
+          # Create tarball from current commit
+          git archive --format=tar.gz --prefix=tubeflow-${VERSION}/ \
+            -o dist/tubeflow-${VERSION}.tar.gz HEAD
+
+          echo "Created tarball:"
+          ls -la dist/
 
       - name: Generate SHA256 checksums
         run: |
           cd dist
-          sha256sum tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz > SHA256SUMS
+          sha256sum tubeflow-${{ inputs.version }}.tar.gz > SHA256SUMS
+          echo "SHA256 checksums:"
           cat SHA256SUMS
 
-      - name: Generate attestation.json (in-toto format)
+      - name: Generate attestation.json (in-toto/SLSA format)
         run: |
-          TARBALL="tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz"
+          VERSION="${{ inputs.version }}"
+          TARBALL="tubeflow-${VERSION}.tar.gz"
           TARBALL_SHA256=$(sha256sum dist/$TARBALL | cut -d' ' -f1)
-          TARBALL_SIZE=$(stat -c%s dist/$TARBALL)
+          BUILD_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
           cat > dist/attestation.json << EOF
           {
@@ -57,9 +81,9 @@ jobs:
             "predicateType": "https://slsa.dev/provenance/v0.2",
             "subject": [
               {
-                "name": "$TARBALL",
+                "name": "${TARBALL}",
                 "digest": {
-                  "sha256": "$TARBALL_SHA256"
+                  "sha256": "${TARBALL_SHA256}"
                 }
               }
             ],
@@ -70,16 +94,19 @@ jobs:
               "buildType": "https://github.com/actions/runner",
               "invocation": {
                 "configSource": {
-                  "uri": "git+https://github.com/${{ github.repository }}@${{ github.ref }}",
+                  "uri": "git+https://github.com/${{ github.repository }}@refs/tags/v${VERSION}",
                   "digest": {
                     "sha1": "${{ github.sha }}"
                   },
                   "entryPoint": ".github/workflows/release.yml"
+                },
+                "parameters": {
+                  "version": "${VERSION}"
                 }
               },
               "metadata": {
                 "buildInvocationId": "${{ github.run_id }}-${{ github.run_attempt }}",
-                "buildStartedOn": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+                "buildStartedOn": "${BUILD_TIME}",
                 "completeness": {
                   "parameters": true,
                   "environment": true,
@@ -89,7 +116,7 @@ jobs:
               },
               "materials": [
                 {
-                  "uri": "git+https://github.com/${{ github.repository }}@${{ github.ref }}",
+                  "uri": "git+https://github.com/${{ github.repository }}",
                   "digest": {
                     "sha1": "${{ github.sha }}"
                   }
@@ -100,24 +127,32 @@ jobs:
           EOF
 
           echo "Generated attestation.json:"
-          cat dist/attestation.json
+          cat dist/attestation.json | head -30
 
       - name: Attest build provenance
-        id: attest
         uses: actions/attest-build-provenance@v2
         with:
-          subject-path: dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+          subject-path: dist/tubeflow-${{ inputs.version }}.tar.gz
+
+      - name: Create and push tag
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${{ inputs.version }}" -m "TubeFlow v${{ inputs.version }}"
+          git push origin "v${{ inputs.version }}"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: v${{ inputs.version }}
+          name: v${{ inputs.version }}
+          prerelease: ${{ inputs.prerelease }}
           files: |
-            dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
+            dist/tubeflow-${{ inputs.version }}.tar.gz
             dist/SHA256SUMS
             dist/attestation.json
-          generate_release_notes: false
           body: |
-            ## TubeFlow v${{ steps.version.outputs.VERSION }}
+            ## TubeFlow v${{ inputs.version }}
 
             **Research-First YouTube Content Creation Pipeline for Claude Code**
 
@@ -141,13 +176,13 @@ jobs:
 
             **SHA256 Checksum:**
             ```bash
-            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/SHA256SUMS
+            curl -LO https://github.com/wnstify/tubeflow/releases/download/v${{ inputs.version }}/SHA256SUMS
             sha256sum -c SHA256SUMS
             ```
 
             **GitHub Attestation:**
             ```bash
-            gh attestation verify tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz --owner wnstify
+            gh attestation verify tubeflow-${{ inputs.version }}.tar.gz --owner wnstify
             ```
 
             ---
@@ -156,9 +191,9 @@ jobs:
 
             ```bash
             # Download and extract
-            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
-            tar -xzf tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
-            cd tubeflow-${{ steps.version.outputs.VERSION }}
+            curl -LO https://github.com/wnstify/tubeflow/releases/download/v${{ inputs.version }}/tubeflow-${{ inputs.version }}.tar.gz
+            tar -xzf tubeflow-${{ inputs.version }}.tar.gz
+            cd tubeflow-${{ inputs.version }}
 
             # Run installer
             ./install.sh        # macOS/Linux/WSL2

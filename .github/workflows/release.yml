@@ -1,5 +1,5 @@
 # TubeFlow Release Workflow
-# Creates releases with SHA256 checksums and build attestation
+# Creates releases with SHA256 checksums, attestation.json, and GitHub attestation
 #
 # Trigger: Push a tag like v1.0.0, v1.1.0, etc.
 # Example: git tag -a v1.1.0 -m "Release v1.1.0" && git push origin v1.1.0
@@ -39,83 +39,140 @@ jobs:
           git archive --format=tar.gz --prefix=tubeflow-${{ steps.version.outputs.VERSION }}/ \
             -o dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz HEAD
 
-          # Create zip
-          git archive --format=zip --prefix=tubeflow-${{ steps.version.outputs.VERSION }}/ \
-            -o dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip HEAD
-
       - name: Generate SHA256 checksums
         run: |
           cd dist
-          sha256sum tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz \
-                    tubeflow-${{ steps.version.outputs.VERSION }}.zip > SHA256SUMS.txt
-          cat SHA256SUMS.txt
+          sha256sum tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz > SHA256SUMS
+          cat SHA256SUMS
 
-      - name: Attest build provenance (tarball)
+      - name: Generate attestation.json (in-toto format)
+        run: |
+          TARBALL="tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz"
+          TARBALL_SHA256=$(sha256sum dist/$TARBALL | cut -d' ' -f1)
+          TARBALL_SIZE=$(stat -c%s dist/$TARBALL)
+
+          cat > dist/attestation.json << EOF
+          {
+            "_type": "https://in-toto.io/Statement/v0.1",
+            "predicateType": "https://slsa.dev/provenance/v0.2",
+            "subject": [
+              {
+                "name": "$TARBALL",
+                "digest": {
+                  "sha256": "$TARBALL_SHA256"
+                }
+              }
+            ],
+            "predicate": {
+              "builder": {
+                "id": "https://github.com/wnstify/tubeflow/actions/runs/${{ github.run_id }}"
+              },
+              "buildType": "https://github.com/actions/runner",
+              "invocation": {
+                "configSource": {
+                  "uri": "git+https://github.com/${{ github.repository }}@${{ github.ref }}",
+                  "digest": {
+                    "sha1": "${{ github.sha }}"
+                  },
+                  "entryPoint": ".github/workflows/release.yml"
+                }
+              },
+              "metadata": {
+                "buildInvocationId": "${{ github.run_id }}-${{ github.run_attempt }}",
+                "buildStartedOn": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+                "completeness": {
+                  "parameters": true,
+                  "environment": true,
+                  "materials": true
+                },
+                "reproducible": false
+              },
+              "materials": [
+                {
+                  "uri": "git+https://github.com/${{ github.repository }}@${{ github.ref }}",
+                  "digest": {
+                    "sha1": "${{ github.sha }}"
+                  }
+                }
+              ]
+            }
+          }
+          EOF
+
+          echo "Generated attestation.json:"
+          cat dist/attestation.json
+
+      - name: Attest build provenance
+        id: attest
         uses: actions/attest-build-provenance@v2
         with:
           subject-path: dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
-
-      - name: Attest build provenance (zip)
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip
-
-      - name: Attest build provenance (checksums)
-        uses: actions/attest-build-provenance@v2
-        with:
-          subject-path: dist/SHA256SUMS.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             dist/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
-            dist/tubeflow-${{ steps.version.outputs.VERSION }}.zip
-            dist/SHA256SUMS.txt
-          generate_release_notes: true
+            dist/SHA256SUMS
+            dist/attestation.json
+          generate_release_notes: false
           body: |
             ## TubeFlow v${{ steps.version.outputs.VERSION }}
 
             **Research-First YouTube Content Creation Pipeline for Claude Code**
 
+            Transform a 4-hour content process into 30 minutes of focused work.
+
+            ---
+
+            ### Highlights
+
+            - **9 Specialized AI Agents** - Research, create, publish, sync, social
+            - **5-Agent Parallel Research** - Topic, competitor, SEO, community + strategist
+            - **Complete 6-Stage Pipeline** - Research → Create → Review → Publish → Sync → Social
+            - **YouTube-Native Formatting** - Proper `*bold*` syntax, not Markdown
+            - **Platform-Specific Social** - LinkedIn, Twitter/X, Facebook optimization
+            - **Voice Preservation** - Your writing style, amplified
+            - **Cross-Platform Support** - macOS, Linux, Windows, WSL2
+
             ---
 
             ### Verify Release Integrity
 
-            **SHA256 Checksums:**
+            **SHA256 Checksum:**
             ```bash
-            # Download and verify
-            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/SHA256SUMS.txt
-            sha256sum -c SHA256SUMS.txt
+            curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/SHA256SUMS
+            sha256sum -c SHA256SUMS
             ```
 
             **GitHub Attestation:**
             ```bash
-            # Verify with GitHub CLI
-            gh attestation verify tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz \
-              --owner wnstify
+            gh attestation verify tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz --owner wnstify
             ```
 
             ---
 
             ### Installation
 
-            **macOS / Linux / WSL2:**
             ```bash
+            # Download and extract
             curl -LO https://github.com/wnstify/tubeflow/releases/download/${{ github.ref_name }}/tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
             tar -xzf tubeflow-${{ steps.version.outputs.VERSION }}.tar.gz
             cd tubeflow-${{ steps.version.outputs.VERSION }}
-            ./install.sh
-            ```
 
-            **Or clone from source:**
-            ```bash
-            git clone https://github.com/wnstify/tubeflow.git
-            cd tubeflow
-            git checkout ${{ github.ref_name }}
-            ./install.sh
+            # Run installer
+            ./install.sh        # macOS/Linux/WSL2
+            .\install.ps1       # Windows PowerShell
             ```
 
             ---
 
-            See [CHANGELOG.md](https://github.com/wnstify/tubeflow/blob/main/CHANGELOG.md) for full release notes.
+            ### Links
+
+            - [Documentation](https://github.com/wnstify/tubeflow#readme)
+            - [Changelog](https://github.com/wnstify/tubeflow/blob/main/CHANGELOG.md)
+            - [Discord](https://wnstify.cc/discord)
+
+            ---
+
+            *Built by Simon at [Webnestify](https://webnestify.cloud)*

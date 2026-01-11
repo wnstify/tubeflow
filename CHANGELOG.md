@@ -17,6 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Comprehensive USP and market position section in README.md
 - Competitive analysis with existing tools (ShortGPT, text2youtube, etc.)
 - "By the Numbers" quick reference section
+- Author section with Simon's bio and featured content
+- About Webnestify company section with ASCII logo
+- Complete social links table (Website, YouTube, Discord, GitHub, LinkedIn, Twitter, Facebook, Trustpilot)
+- GitHub repositories showcase
+- Business contact and application links
 
 ### Changed
 - Updated Python requirement from 3.8+ to 3.10+ (yt-dlp compatibility)
@@ -181,9 +186,9 @@ When contributing to TubeFlow, please update this changelog:
 
 ## Links
 
-- [GitHub Repository](https://github.com/yourorg/tubeflow)
-- [Issue Tracker](https://github.com/yourorg/tubeflow/issues)
-- [Discussions](https://github.com/yourorg/tubeflow/discussions)
+- [GitHub Repository](https://github.com/wnstify/tubeflow)
+- [Issue Tracker](https://github.com/wnstify/tubeflow/issues)
+- [Discussions](https://github.com/wnstify/tubeflow/discussions)
 
-[Unreleased]: https://github.com/yourorg/tubeflow/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/yourorg/tubeflow/releases/tag/v1.0.0
+[Unreleased]: https://github.com/wnstify/tubeflow/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/wnstify/tubeflow/releases/tag/v1.0.0

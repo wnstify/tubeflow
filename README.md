@@ -35,6 +35,8 @@ TubeFlow is an open-source content creation system that transforms how you produ
 - [Unique Features](#unique-features-no-alternative-exists)
 - [Market Position](#market-position)
 - [By the Numbers](#by-the-numbers)
+- [Author](#author)
+- [About Webnestify](#about-webnestify)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -86,7 +88,7 @@ Platform-optimized posts for LinkedIn, Twitter/X, and Facebook from a single com
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourorg/tubeflow.git
+git clone https://github.com/wnstify/tubeflow.git
 cd tubeflow
 
 # Run interactive installer
@@ -329,7 +331,7 @@ For enhanced research capabilities:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourorg/tubeflow.git
+git clone https://github.com/wnstify/tubeflow.git
 cd tubeflow
 
 # Make installer executable (if needed)
@@ -343,7 +345,7 @@ chmod +x install.sh
 
 ```powershell
 # Clone the repository
-git clone https://github.com/yourorg/tubeflow.git
+git clone https://github.com/wnstify/tubeflow.git
 cd tubeflow
 
 # Run interactive installer
@@ -366,7 +368,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ### Manual Setup (All Platforms)
 
 ```bash
-git clone https://github.com/yourorg/tubeflow.git
+git clone https://github.com/wnstify/tubeflow.git
 cd tubeflow
 
 # Copy and edit configuration
@@ -702,6 +704,73 @@ Interactive wizard handles prerequisites, configuration, and template processing
 
 ---
 
+## Author
+
+### Simon
+
+TubeFlow was created by **Simon**, a self-hosting enthusiast and content creator focused on making complex technical topics accessible to everyone.
+
+Simon runs the **@webnestify** YouTube channel, where he creates tutorials on Docker, self-hosting, home labs, and cloud infrastructure. TubeFlow was born from his own production workflow, refined over years of creating technical content.
+
+**YouTube:** [@webnestify](https://youtube.com/@webnestify)
+
+**Featured Content:**
+- [The Definitive Self-Hosting Guide](https://youtube.com/watch?v=tTyq9xGy1pM) - Comprehensive guide to self-hosting
+
+---
+
+## About Webnestify
+
+```
+██╗    ██╗███████╗██████╗ ███╗   ██╗███████╗███████╗████████╗██╗███████╗██╗   ██╗
+██║    ██║██╔════╝██╔══██╗████╗  ██║██╔════╝██╔════╝╚══██╔══╝██║██╔════╝╚██╗ ██╔╝
+██║ █╗ ██║█████╗  ██████╔╝██╔██╗ ██║█████╗  ███████╗   ██║   ██║█████╗   ╚████╔╝
+██║███╗██║██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝  ╚════██║   ██║   ██║██╔══╝    ╚██╔╝
+╚███╔███╔╝███████╗██████╔╝██║ ╚████║███████╗███████║   ██║   ██║██║        ██║
+ ╚══╝╚══╝ ╚══════╝╚═════╝ ╚═╝  ╚═══╝╚══════╝╚══════╝   ╚═╝   ╚═╝╚═╝        ╚═╝
+```
+
+**Webnestify** is a cloud solutions company established in **Slovakia in 2021**.
+
+> *"We're here to ensure your company doesn't just keep up with the digital age but thrives in it."*
+
+Webnestify is more than a cloud solutions provider. We're your strategic partner in digital transformation. Businesses of all sizes deserve the best technology.
+
+### What We Do
+
+- **Self-Hosting Solutions** - Docker, Kubernetes, home lab setups
+- **Cloud Infrastructure** - Architecture, deployment, optimization
+- **Technical Education** - YouTube tutorials, guides, documentation
+- **Open-Source Advocacy** - Supporting and promoting open-source projects
+
+### Connect With Webnestify
+
+| Platform | Link |
+|----------|------|
+| **Website** | [webnestify.cloud](https://webnestify.cloud) |
+| **YouTube** | [@webnestify](https://youtube.com/@webnestify) |
+| **Discord** | [wnstify.cc/discord](https://wnstify.cc/discord) |
+| **GitHub** | [github.com/wnstify](https://github.com/wnstify) |
+| **LinkedIn** | [linkedin.com/company/webnestify](https://linkedin.com/company/webnestify) |
+| **Twitter** | [twitter.com/webnestify](https://twitter.com/webnestify) |
+| **Facebook** | [facebook.com/webnestify.cloud](https://facebook.com/webnestify.cloud) |
+| **Trustpilot** | [Reviews](https://www.trustpilot.com/review/webnestify.cloud) |
+
+### GitHub Repositories
+
+| Repository | Description |
+|------------|-------------|
+| [wnstify/tubeflow](https://github.com/wnstify/tubeflow) | This project - YouTube content pipeline |
+| [wnstify/wn-youtube](https://github.com/wnstify/wn-youtube) | Video roadmap and community voting |
+| [wnstify/docker](https://github.com/wnstify/docker) | Docker Compose files from tutorials |
+
+### Work With Us
+
+- **Business Inquiries:** [webnestify.cloud/contact](https://webnestify.cloud/contact)
+- **Apply for Services:** [webnestify.cloud/webnestify-application](https://webnestify.cloud/webnestify-application/)
+
+---
+
 ## Contributing
 
 Contributions welcome! See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for:
@@ -737,8 +806,9 @@ TubeFlow is open-source software licensed under the [MIT License](LICENSE).
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourorg/tubeflow/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourorg/tubeflow/discussions)
+- **Issues**: [GitHub Issues](https://github.com/wnstify/tubeflow/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/wnstify/tubeflow/discussions)
+- **Discord**: [wnstify.cc/discord](https://wnstify.cc/discord)
 - **Documentation**: [docs/](docs/)
 
 ---

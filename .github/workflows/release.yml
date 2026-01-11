@@ -134,12 +134,30 @@ jobs:
         with:
           subject-path: dist/tubeflow-${{ inputs.version }}.tar.gz
 
-      - name: Create and push tag
+      - name: Create verified tag via GitHub API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git tag -a "v${{ inputs.version }}" -m "TubeFlow v${{ inputs.version }}"
-          git push origin "v${{ inputs.version }}"
+          VERSION="${{ inputs.version }}"
+
+          # Create annotated tag object via API (this makes it verified)
+          TAG_SHA=$(gh api repos/${{ github.repository }}/git/tags \
+            -X POST \
+            -f tag="v${VERSION}" \
+            -f message="TubeFlow v${VERSION}" \
+            -f object="${{ github.sha }}" \
+            -f type="commit" \
+            --jq '.sha')
+
+          echo "Created tag object: $TAG_SHA"
+
+          # Create reference pointing to the tag
+          gh api repos/${{ github.repository }}/git/refs \
+            -X POST \
+            -f ref="refs/tags/v${VERSION}" \
+            -f sha="$TAG_SHA"
+
+          echo "Created tag reference v${VERSION}"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2

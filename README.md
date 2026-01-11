@@ -31,6 +31,10 @@ TubeFlow is an open-source content creation system that transforms how you produ
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
 - [Documentation](#documentation)
+- [Why TubeFlow?](#why-tubeflow)
+- [Unique Features](#unique-features-no-alternative-exists)
+- [Market Position](#market-position)
+- [By the Numbers](#by-the-numbers)
 - [Contributing](#contributing)
 - [License](#license)
 
@@ -509,22 +513,192 @@ tubeflow/
 
 ---
 
-## What Makes TubeFlow Different
+## Why TubeFlow?
 
-### Research Before Writing
-Most workflows start with a blank page. TubeFlow starts with 5 agents gathering research in parallel, so your content is informed by real data.
+### The Problem
 
-### No Formatting Headaches
-YouTube doesn't support Markdown. LinkedIn penalizes links in posts. Twitter counts emojis as 2 characters. TubeFlow knows all these quirks.
+YouTube content creation involves repetitive tasks that drain creative energy:
+- Researching topics across multiple sources
+- Writing descriptions with proper formatting (YouTube ≠ Markdown)
+- Creating platform-specific social posts
+- Managing drafts, published content, and metadata
+- Crediting open-source projects correctly
 
-### Your Voice, Amplified
-TubeFlow doesn't replace your voice. It amplifies it. Your writing style guide ensures authentic content.
+Existing tools are either too simple (just templates) or too complex (enterprise video production). Nothing exists specifically for **technical content creators** using **AI-assisted workflows**.
 
-### Community-Driven Roadmap
-Your audience can vote on upcoming videos via GitHub Issues. When you publish, roadmap issues close automatically.
+### The Solution
 
-### Open-Source First
-Automatically credits open-source developers with proper attribution and support links.
+TubeFlow is the first **research-first content pipeline** built natively for **Claude Code**. It transforms a 4-hour content process into 30 minutes of focused work.
+
+---
+
+## Unique Features (No Alternative Exists)
+
+Based on market research (January 2026), TubeFlow offers capabilities not found in any other tool:
+
+### 1. Research-First Architecture
+
+**What it is:** 5 specialized AI agents work in parallel before you write anything.
+
+**Why it matters:** Most tools start with a blank page. TubeFlow starts with:
+- Topic analysis (features, docs, complexity)
+- Competitor research (existing videos, content gaps)
+- SEO intelligence (keywords, trends, optimal titles)
+- Community insights (Reddit, forums, real questions)
+- Strategic synthesis (single video vs. series recommendation)
+
+**Result:** Every piece of content is informed by real data, not guesswork.
+
+### 2. Claude Code Native
+
+**What it is:** Built from the ground up for Claude Code's agent/skill/command architecture.
+
+**Why it matters:** Other YouTube tools are:
+- Standalone apps (require context switching)
+- Web-based (can't access your local files)
+- API wrappers (no real intelligence)
+
+TubeFlow lives in your development environment. Research, write, and publish without leaving your terminal.
+
+**Comparison:**
+
+| Tool | Type | Claude Code Integration |
+|------|------|------------------------|
+| **TubeFlow** | Pipeline | Native (agents, skills, commands) |
+| ShortGPT | Framework | None |
+| text2youtube | Script | None |
+| Kenny Liao's Plugin | Plugin | Partial (ideation only) |
+
+### 3. Complete 6-Stage Pipeline
+
+**What it is:** End-to-end workflow from idea to social promotion.
+
+```
+Research → Create → Review → Publish → Sync → Social
+```
+
+**Why it matters:** Other tools handle 1-2 stages. TubeFlow handles all 6:
+
+| Stage | TubeFlow | Typical Tools |
+|-------|----------|---------------|
+| Research | 5-agent parallel research | Manual |
+| Create | Script + description + thumbnail + comment | Template only |
+| Review | Drafts folder with versioning | None |
+| Publish | Metadata extraction, file organization | Manual |
+| Sync | GitHub repo with voting | None |
+| Social | 3 platforms, optimized per platform | Copy-paste |
+
+### 4. Platform-Native Formatting
+
+**What it is:** Content is formatted correctly for each platform from the start.
+
+**Why it matters:** Each platform has quirks that break copy-paste:
+
+| Platform | Gotcha | TubeFlow Handles It |
+|----------|--------|---------------------|
+| YouTube | Uses `*bold*` not `**bold**` | Yes |
+| YouTube | First 100-160 chars visible before "Show more" | Yes |
+| LinkedIn | Links in post = algorithm penalty | Yes (puts in first comment) |
+| Facebook | 2 link posts/month limit | Yes (links in comments) |
+| Twitter | Emojis count as 2 characters | Yes |
+| Twitter | URLs always count as 23 chars | Yes |
+
+No more reformatting. Write once, publish correctly.
+
+### 5. Voice Preservation System
+
+**What it is:** Your personal writing style guide informs all generated content.
+
+**Why it matters:** AI content often sounds generic. TubeFlow uses:
+- `writing-style.md` - Your tone, phrases, sentence patterns
+- `channel-overview.md` - Your brand values and content pillars
+
+**Result:** Content sounds like you, not AI.
+
+### 6. Open-Source Attribution Engine
+
+**What it is:** Automatically researches and credits open-source projects.
+
+**Why it matters:** Technical creators often feature open-source tools. TubeFlow:
+- Finds maintainer/developer names
+- Discovers FUNDING.yml, GitHub Sponsors, Open Collective
+- Generates genuine thank-you messages
+- Includes support links for viewers
+
+**Example output:**
+```
+A huge thanks to the Nextcloud team for building this incredible
+self-hosted cloud platform. If you find it useful, consider
+supporting the project: https://nextcloud.com/contribute/
+```
+
+### 7. Community-Driven Roadmap
+
+**What it is:** GitHub Issues integration for audience video voting.
+
+**Why it matters:** Let your community decide what you make next:
+- `/youtube sync` creates roadmap issues
+- Viewers vote with thumbs up
+- Publishing auto-closes the issue
+- Full transparency on upcoming content
+
+### 8. Cross-Platform Installation
+
+**What it is:** Native installers for every major platform.
+
+| Platform | Installer | Status |
+|----------|-----------|--------|
+| macOS (Intel/Apple Silicon) | `./install.sh` | Full support |
+| Linux (Ubuntu/Debian/Fedora/Arch) | `./install.sh` | Full support |
+| Windows 10/11 | `.\install.ps1` | Full support |
+| WSL2 | `./install.sh` | Full support |
+
+Interactive wizard handles prerequisites, configuration, and template processing.
+
+---
+
+## Market Position
+
+### What Exists Today (January 2026)
+
+| Category | Tools | Limitation |
+|----------|-------|------------|
+| **YouTube Automation** | ShortGPT, text2youtube, youtube-automation-agent | No Claude Code integration, focused on shorts/TikTok |
+| **Claude Code Plugins** | 2,487 repos indexed | None with full YouTube pipeline |
+| **Content Ideation** | Kenny Liao's plugin | Ideation only, no production workflow |
+| **Template Systems** | Various | No research, no formatting intelligence |
+
+### TubeFlow's Niche
+
+**Technical content creators** who:
+- Use Claude Code for development
+- Create tutorials, reviews, or educational content
+- Value research-backed content over viral trends
+- Want to maintain consistent voice and brand
+- Feature open-source projects
+
+### Not For
+
+- Short-form content (TikTok, YouTube Shorts)
+- Entertainment/vlog content
+- Teams needing collaboration features
+- Non-technical workflows
+
+---
+
+## By the Numbers
+
+| Metric | Value |
+|--------|-------|
+| **Agents** | 9 specialized AI agents |
+| **Commands** | 3 slash commands |
+| **Skills** | 3 workflow skills |
+| **Templates** | 8 content templates |
+| **Scripts** | 5 Python utilities |
+| **Platforms** | 4 (YouTube + LinkedIn + Twitter + Facebook) |
+| **Research agents (parallel)** | 4 + 1 strategist |
+| **Total files** | 46 |
+| **License** | MIT (fully open-source) |
 
 ---
 

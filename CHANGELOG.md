@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GitHub issue templates (bug report, feature request)
 - GitHub pull request template
 - CHANGELOG.md following Keep a Changelog format
+- Comprehensive USP and market position section in README.md
+- Competitive analysis with existing tools (ShortGPT, text2youtube, etc.)
+- "By the Numbers" quick reference section
 
 ### Changed
 - Updated Python requirement from 3.8+ to 3.10+ (yt-dlp compatibility)
